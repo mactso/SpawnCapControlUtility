@@ -1,0 +1,11 @@
+.gradle
+/logs/
+/.classpath
+/.settings/
+/bin/
+/run/
+/build/
+/.project
+/*.launch
+/build.gradle.bak
+!gradle-wrapper.jar
