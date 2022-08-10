@@ -6,6 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.mactso.spawncapcontrolutility.Main;
+import com.mactso.spawncapcontrolutility.config.MyConfig;
 
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.coremod.api.ASMAPI;
@@ -42,9 +43,13 @@ public class EventHandler {
         	LOGGER.info("Mob Category: " + n);
         }
         try {
-            field.setInt(MobCategory.MONSTER, 5);
-            field.setInt(MobCategory.CREATURE, 80);
-            field.setInt(MobCategory.AMBIENT, 1);
+            field.setInt(MobCategory.MONSTER, MyConfig.getMonsterCap());
+            field.setInt(MobCategory.CREATURE, MyConfig.getCreatureCap());
+            field.setInt(MobCategory.AMBIENT, MyConfig.getAmbientCap());
+            field.setInt(MobCategory.WATER_CREATURE, MyConfig.getWaterCreatureCap());
+            field.setInt(MobCategory.WATER_AMBIENT, MyConfig.getWaterAmbientCap());
+            field.setInt(MobCategory.UNDERGROUND_WATER_CREATURE, MyConfig.getUndergroundWaterCreatureCap());
+
         }
         catch (Exception e) {
             e.printStackTrace();
