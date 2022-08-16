@@ -1,11 +1,9 @@
-.gradle
 /logs/
-/.classpath
-/.settings/
 /bin/
-/run/
 /build/
+/.gradle/
+/.settings/
+/.classpath
 /.project
+/run/
 /*.launch
-/build.gradle.bak
-!gradle-wrapper.jar

@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "spawncapcontrolutility",
+  "version": "${version}",
+
+  "name": "Spawncap Control Utility",
+  "description": "Spawncap Control Utility.",
+  "authors": [
+    "Mactso, Lupicus"
+  ],
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/spawncap-control-utility",
+    "sources": "https://github.com/mactso/SpawncapControlUtility",
+    "issues": "https://github.com/mactso/SpawncapControlUtility/issues"
+  },
+
+  "license": "MIT License",
+  "icon": "assets/spawncapcontrolutility/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.mactso.spawncapcontrolutility.Main"
+    ]
+  },
+  "mixins": [
+    "spawncapcontrolutility.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.7.4",
+    "fabric": "*",
+    "minecraft": "1.18.x"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}
