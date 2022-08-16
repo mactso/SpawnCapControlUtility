@@ -73,8 +73,11 @@ public class EventHandler {
 //        long l = Util.getMeasuringTimeNano() - iOException;
 //
 		
-		
-		
+		// TODO this is the formal way of doing it.
+//		MappingResolver mapping = FabricLoader.getInstance().getMappingResolver();
+//      String name = mapping.mapFieldName("intermediary", "net.minecraft.class_1311", "field_6297", "I");		
+
+		// TODO this is hte hacky way of doing it.
     	Field field = null;
 //        String fn = ASMAPI.mapField("f_21586_"); // internal SpawnGroup field : "max"
         try {
