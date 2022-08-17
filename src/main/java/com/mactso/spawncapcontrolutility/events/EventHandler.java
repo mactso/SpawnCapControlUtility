@@ -50,7 +50,6 @@ public class EventHandler {
             field.setInt(SpawnGroup.WATER_CREATURE, ModConfigs.getWaterCreatureCap());
             field.setInt(SpawnGroup.WATER_AMBIENT, ModConfigs.getWaterAmbientCap());
             field.setInt(SpawnGroup.UNDERGROUND_WATER_CREATURE, ModConfigs.getUndergroundWaterCreatureCap());
-
         }
         catch (Exception e) {
             e.printStackTrace();
