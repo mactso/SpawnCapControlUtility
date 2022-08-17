@@ -1,3 +1,4 @@
+package com.mactso.spawncapcontrolutility.config;
 //package com.mactso.spawncapcontrolutility.config;
 //
 //import java.util.List;
