@@ -12,9 +12,15 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtList;
+import net.minecraft.nbt.NbtString;
 import net.minecraft.server.world.ServerWorld;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
@@ -68,17 +74,16 @@ public class Utility {
 	}
 
 	public static void sendBoldChat(PlayerEntity p, String chatMessage, Formatting textColor) {
-		
-		Text component = new LiteralText(chatMessage);
-		// TODO how to make colored and bold
-		p.sendSystemMessage(component, p.getUuid());
+
+		MutableText component = Text.literal(chatMessage).setStyle(Style.EMPTY.withBold(true).withColor(TextColor.fromFormatting(textColor)));
+		p.sendMessage(component ); // TODO UUID?
 
 	}
 
 	public static void sendChat(PlayerEntity p, String chatMessage, Formatting textColor) {
-		Text component = new LiteralText(chatMessage);
+		MutableText component = Text.literal(chatMessage).setStyle(Style.EMPTY.withColor(TextColor.fromFormatting(textColor)));
 		// TODO how to make colored 
-		p.sendSystemMessage(component, p.getUuid());
+		p.sendMessage(component ); // TODO UUID?
 
 	}
 
@@ -145,24 +150,21 @@ public class Utility {
 		return true;
 	}
 
-	// TODO: Figure this out - not used yet in Fabric
-//	public static void setName(ItemStack stack, String inString)
-//	{
-//		CompoundTag tag = stack.getOrCreateSubNbt("display");
-//		ListTag list = new ListTag();
-//		list.add(StringTag.valueOf(inString));
-//		tag.put("Name", list);
-//	}
-	
-	
-	// TODO: Figure this out - not used yet in Fabric
-//	public static void setLore(ItemStack stack, String inString)
-//	{
-//		NbtCompound tag = stack.getOrCreateSubNbt("display");
-//		ListTag list = new ListTag();
-//		list.add(StringTag.valueOf(inString));
-//		tag.put("Lore", list);
-//	}
+	public static void setName(ItemStack stack, String inString)
+	{
+		NbtCompound tag = stack.getOrCreateSubNbt("display");
+		NbtList list = new NbtList();
+		list.add(NbtString.of(inString));
+		tag.put("Name", list);
+	}
+
+	public static void setLore(ItemStack stack, String inString)
+	{
+		NbtCompound tag = stack.getOrCreateSubNbt("display");
+		NbtList list = new NbtList();
+		list.add(NbtString.of(inString));
+		tag.put("Lore", list);
+	}
 	
 	public static boolean isNotNearWebs(BlockPos pos, ServerWorld serverworld) {
 

@@ -2,14 +2,10 @@ package com.mactso.spawncapcontrolutility.events;
 
 import java.util.concurrent.Executor;
 
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerChunkEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerEntityEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.WorldAccess;
-import net.minecraft.world.level.*;
 
 public class CommonEvents {
 
