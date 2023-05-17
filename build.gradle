@@ -65,10 +65,10 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            property 'forge.enabledGameTestNamespaces', 'examplemod'
+            property 'forge.enabledGameTestNamespaces', 'spawncapcontrolutility'
 
             mods {
-                examplemod {
+                spawncapcontrolutility {
                     source sourceSets.main
                 }
             }
@@ -84,7 +84,7 @@ minecraft {
 
             property 'forge.logging.console.level', 'debug'
 
-            property 'forge.enabledGameTestNamespaces', 'examplemod'
+            property 'forge.enabledGameTestNamespaces', 'spawncapcontrolutility'
 
             mods {
                 spawncapcontrolutility{
