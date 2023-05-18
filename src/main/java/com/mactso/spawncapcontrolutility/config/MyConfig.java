@@ -1,5 +1,6 @@
 package com.mactso.spawncapcontrolutility.config;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -9,10 +10,12 @@ import org.apache.logging.log4j.Logger;
 import com.mactso.spawncapcontrolutility.Main;
 
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.common.ForgeConfigSpec.ConfigValue;
 import net.minecraftforge.common.ForgeConfigSpec.IntValue;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.config.ModConfigEvent;
+import net.minecraft.world.entity.MobCategory;
 
 @Mod.EventBusSubscriber(modid = Main.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class MyConfig {
@@ -28,84 +31,39 @@ public class MyConfig {
 	public static final Common COMMON;
 	public static final ForgeConfigSpec COMMON_SPEC;
 
-
-	public static int getMonsterCap() {
-		return monsterCap;
+	public static int splitAndGetInt(String inputString) {
+		try {
+			String[] parts = inputString.split(",", 2);
+			String secondHalf = parts[1].trim();
+			return Integer.parseInt(secondHalf);
+		} catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+			LOGGER.error("Configuration Error for category: " + inputString);
+			return -1;
+		}
 	}
 
 
-
-	public static void setMonsterCap(int monsterCap) {
-		MyConfig.monsterCap = monsterCap;
+	public static String getSpawnCategoryName(String str) {
+		for (String s : spawnCategories) {
+			if (s.toUpperCase().contains(str.toUpperCase())) {
+				String[] parts = str.split(",", 2);
+				return parts[0].trim();
+			}
+		}
+		return "";
 	}
-
-
-
-	public static int getCreatureCap() {
-		return creatureCap;
-	}
-
-
-
-	public static void setCreatureCap(int creatureCap) {
-		MyConfig.creatureCap = creatureCap;
-	}
-
-
-
-	public static int getAmbientCap() {
-		return ambientCap;
-	}
-
-
-
-	public static void setAmbientCap(int ambientCap) {
-		MyConfig.ambientCap = ambientCap;
-	}
-
-
-
-	public static int getWaterCreatureCap() {
-		return waterCreatureCap;
-	}
-
-
-
-	public static void setWaterCreatureCap(int waterCreatureCap) {
-		MyConfig.waterCreatureCap = waterCreatureCap;
-	}
-
-
-
-	public static int getWaterAmbientCap() {
-		return waterAmbientCap;
-	}
-
-
-
-	public static void setWaterAmbientCap(int waterAmbientCap) {
-		MyConfig.waterAmbientCap = waterAmbientCap;
-	}
-
-
-	public static int getUndergroundWaterCreatureCap() {
-		return undergroundWaterCreatureCap;
-	}
-
-
-
-	public static void setUndergroundWaterCreatureCap(int undergroundWaterCreatureCap) {
-		MyConfig.undergroundWaterCreatureCap = undergroundWaterCreatureCap;
-	}
-
-
-	public static int monsterCap;
-	public static int creatureCap;
-	public static int ambientCap;
-	public static int waterCreatureCap;
-	public static int waterAmbientCap;	
-	public static int undergroundWaterCreatureCap;		
 	
+	public static int getSpawnCategoryMaximum(String str) {
+		for (String s : spawnCategories) {
+			if (s.toUpperCase().contains(str.toUpperCase())) {
+				return splitAndGetInt(s.toUpperCase());
+			}
+		}
+		return -1;
+	}
+
+	public static String[] spawnCategories;
+
 	@SubscribeEvent
 	public static void onModConfigEvent(final ModConfigEvent configEvent) {
 		if (configEvent.getConfig().getSpec() == MyConfig.COMMON_SPEC) {
@@ -113,66 +71,47 @@ public class MyConfig {
 		}
 	}
 
-	
-	
 	public static void bakeConfig() {
-		monsterCap  = COMMON.monsterCap.get();
-		creatureCap = COMMON.creatureCap.get();
-		ambientCap = COMMON.ambientCap.get();
-		waterCreatureCap = COMMON.waterCreatureCap.get();
-		waterAmbientCap = COMMON.waterAmbientCap.get();
-		undergroundWaterCreatureCap = COMMON.undergroundWaterCreatureCap.get();
+
+		spawnCategories = toArray(COMMON.spawnCategories.get());
+
 	}
 
+	private static String[] toArray(List<? extends String> value) {
+		return isEmpty(value) ? new String[0] : value.toArray(new String[value.size()]);
+	}
 
-	
+	private static boolean isEmpty(List<? extends String> value) {
+		return value.isEmpty() || (value.size() == 1 && value.get(0).isEmpty());
+	}
+
 	public static class Common {
 
-		public final IntValue monsterCap;
-		public final IntValue creatureCap;
-		public final IntValue ambientCap;
-		public final IntValue waterCreatureCap;
-		public final IntValue waterAmbientCap;
-		public final IntValue undergroundWaterCreatureCap;
-		
-		public Common	(ForgeConfigSpec.Builder builder) {
 
+		public final ConfigValue<List<? extends String>> spawnCategories;
 
-			monsterCap = builder.comment("Max Monsters (zombie,skeleton, creeper, etc.)")
-					.translation(Main.MODID + ".config." + "monsterCap")
-					.defineInRange("monsterCap", () -> 75, 1, 210);
-			
-			creatureCap = builder.comment("MaxCreatures (sheep, cows)")
-					.translation(Main.MODID + ".config." + "creatureCap")
-					.defineInRange("creatureCap", () -> 11, 1, 210);
+		public Common(ForgeConfigSpec.Builder builder) {
 
+			List<String> spawnCategoriesDefault = Arrays.asList(
+					MobCategory.MONSTER.getName().toUpperCase() + "," + "73",
+					MobCategory.CREATURE.getName().toUpperCase() + "," + MobCategory.CREATURE.getMaxInstancesPerChunk(),
+					MobCategory.AMBIENT.getName().toUpperCase() + "," + 14,
+					MobCategory.AXOLOTLS.getName().toUpperCase() + "," + MobCategory.AXOLOTLS.getMaxInstancesPerChunk(),
+					MobCategory.UNDERGROUND_WATER_CREATURE.getName().toUpperCase() + ","
+							+ MobCategory.UNDERGROUND_WATER_CREATURE.getMaxInstancesPerChunk(),
+					MobCategory.WATER_CREATURE.getName().toUpperCase() + "," + MobCategory.WATER_CREATURE.getMaxInstancesPerChunk()
+							,
+					MobCategory.WATER_AMBIENT.getName().toUpperCase() + "," + MobCategory.WATER_AMBIENT.getMaxInstancesPerChunk()
+							);
 
-			ambientCap= builder.comment("Max Ambient (bats)")
-					.translation(Main.MODID + ".config." + "ambientCap")
-					.defineInRange("ambientCap", () -> 10, 1, 210);
+			spawnCategories = builder
+					.comment("spawn Categories(MONSTER, CREATURE, ... defaults..., custom pools from other mods")
+					.translation(Main.MODID + ".config")
+					.defineList("spawnCategories", spawnCategoriesDefault, Common::isString);
 
-
-			waterCreatureCap= builder.comment("Max water creature (squid, dolphins)")
-					.translation(Main.MODID + ".config." + "waterCreatureCap")
-					.defineInRange("waterCreatureCap", () -> 7, 1, 210);
-
-			waterAmbientCap= builder.comment("Max Water Ambient (Tropical Fish)")
-					.translation(Main.MODID + ".config." + "waterAmbientCap")
-					.defineInRange("waterAmbientCap", () -> 19, 1, 210);
-
-			undergroundWaterCreatureCap= builder.comment("Max Water Creature (Glow Squid)")
-					.translation(Main.MODID + ".config." + "undergroundWaterCreatureCap")
-					.defineInRange("undergroundWaterCreatureCap", () -> 3, 1, 210);
-			
 		}
 
-		private static String[] extract(List<? extends String> value)
-		{
-			return value.toArray(new String[value.size()]);
-		}
-		
-		public static boolean isString(Object o)
-		{
+		public static boolean isString(Object o) {
 			return (o instanceof String);
 		}
 	}

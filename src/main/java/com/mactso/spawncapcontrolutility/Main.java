@@ -5,7 +5,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.IExtensionPoint.DisplayTest;
 
 import com.mactso.spawncapcontrolutility.config.MyConfig;
-import com.mactso.spawncapcontrolutility.events.EventHandler;
+import com.mactso.spawncapcontrolutility.events.HandleServerAboutToStart;
 
 
 import net.minecraftforge.fml.ModLoadingContext;
@@ -31,7 +31,7 @@ public class Main {
 	    
 		@SubscribeEvent 
 		public void preInit (final FMLCommonSetupEvent event) {
-			MinecraftForge.EVENT_BUS.register(new EventHandler());
+			MinecraftForge.EVENT_BUS.register(new HandleServerAboutToStart());
 		}  
 
 }
