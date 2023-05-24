@@ -1,6 +1,6 @@
 package com.mactso.spawncapcontrolutility;
 
-import com.mactso.spawncapcontrolutility.config.ModConfigs;
+import com.mactso.spawncapcontrolutility.config.MyConfig;
 import com.mactso.spawncapcontrolutility.events.CommonEvents;
 
 import net.fabricmc.api.ModInitializer;
@@ -11,7 +11,7 @@ public class Main implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		ModConfigs.registerConfigs();
+		MyConfig.registerConfigs();
 		registerCallbacks();
 	}
 	

@@ -14,7 +14,7 @@ public class CommonEvents {
 	}
 
 	public static void onServerStarting(MinecraftServer server) {
-		EventHandler.onAboutToStart(server);
+		HandleServerAboutToStart.onAboutToStart(server);
 	}
 
 	
