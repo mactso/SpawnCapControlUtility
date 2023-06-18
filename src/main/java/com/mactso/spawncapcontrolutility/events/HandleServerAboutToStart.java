@@ -48,7 +48,7 @@ public class HandleServerAboutToStart {
 
 			String scn = MyConfig.getSpawnCategoryName(mn);
 			if (scn.equals("")) {
-				LOGGER.info("SpawncapControlUtility: Category " + mn + " had no configured overrides.  Keeping maximum of " + mc.getMaxInstancesPerChunk());
+				LOGGER.info("SpawncapControlUtility: Category " + mc + " had no configured overrides.  Keeping maximum of " + mc.getMaxInstancesPerChunk());
 				continue;
 			} 
 
