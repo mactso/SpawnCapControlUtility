@@ -109,46 +109,46 @@ public class Utility {
 		return;
 	}
 
-	public static boolean populateEntityType(EntityType<?> et, ServerWorld serverlevel, BlockPos savePos, int range,
-			int modifier) {
-	
-		boolean isBaby = false;
-		return populateEntityType(et, serverlevel, savePos, range, modifier, isBaby);
-	}
+//	public static boolean populateEntityType(EntityType<?> et, ServerWorld serverlevel, BlockPos savePos, int range,
+//			int modifier) {
+//	
+//		boolean isBaby = false;
+//		return populateEntityType(et, serverlevel, savePos, range, modifier, isBaby);
+//	}
 
-	public static boolean populateEntityType(EntityType<?> et, ServerWorld level, BlockPos savePos, int range,
-			int modifier, boolean isBaby) {
-		boolean persistant = false;
-		return populateEntityType(et, level, savePos, range, modifier, persistant, isBaby);
-	}
+//	public static boolean populateEntityType(EntityType<?> et, ServerWorld level, BlockPos savePos, int range,
+//			int modifier, boolean isBaby) {
+//		boolean persistant = false;
+//		return populateEntityType(et, level, savePos, range, modifier, persistant, isBaby);
+//	}
 
-	public static boolean populateEntityType(EntityType<?> et, ServerWorld serverworld, BlockPos savePos, int range,
-			int modifier, boolean persistant, boolean isBaby) {
-		int numZP;
-		HostileEntity e;
-		numZP = serverworld.random.nextInt(range) - modifier;
-		if (numZP < 0)
-			return false;
-		for (int i = 0; i <= numZP; i++) {
+//	public static boolean populateEntityType(EntityType<?> et, ServerWorld serverworld, BlockPos savePos, int range,
+//			int modifier, boolean persistant, boolean isBaby) {
+//		int numZP;
+//		HostileEntity e;
+//		numZP = serverworld.random.nextInt(range) - modifier;
+//		if (numZP < 0)
+//			return false;
+//		for (int i = 0; i <= numZP; i++) {
+//
+//			e = (HostileEntity) et.spawn(serverworld, null, null, null, savePos.north().west(), SpawnReason.NATURAL, true, true);
+//
+//			if (persistant) 
+//				e.setPersistent();
+//			e.setBaby(isBaby);
+//		}
+//		return true;
+//	}
 
-			e = (HostileEntity) et.spawn(serverworld, null, null, null, savePos.north().west(), SpawnReason.NATURAL, true, true);
-
-			if (persistant) 
-				e.setPersistent();
-			e.setBaby(isBaby);
-		}
-		return true;
-	}
-
-	public static boolean populateXEntityType(EntityType<?> et, ServerWorld level, BlockPos savePos, int X,  boolean isBaby) {
-		HostileEntity e;
-
-		for (int i = 0; i < X; i++) {
-			e = (HostileEntity) et.spawn(level, null, null, null, savePos.north().west(), SpawnReason.NATURAL, true, true);
-			e.setBaby(isBaby);
-		}
-		return true;
-	}
+//	public static boolean populateXEntityType(EntityType<?> et, ServerWorld level, BlockPos savePos, int X,  boolean isBaby) {
+//		HostileEntity e;
+//
+//		for (int i = 0; i < X; i++) {
+//			e = (HostileEntity) et.spawn(level, null, null, null, savePos.north().west(), SpawnReason.NATURAL, true, true);
+//			e.setBaby(isBaby);
+//		}
+//		return true;
+//	}
 
 	public static void setName(ItemStack stack, String inString)
 	{

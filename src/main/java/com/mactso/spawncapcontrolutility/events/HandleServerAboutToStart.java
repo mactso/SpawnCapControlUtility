@@ -7,48 +7,36 @@ import org.apache.logging.log4j.Logger;
 
 import com.mactso.spawncapcontrolutility.config.MyConfig;
 
+import net.fabricmc.loader.api.MappingResolver;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.dedicated.DedicatedServer;
-import net.minecraft.server.integrated.IntegratedServer;
-
+import net.fabricmc.loader.api.FabricLoader;
 
 
 
 public class HandleServerAboutToStart {
 	private static final Logger LOGGER = LogManager.getLogger();
-
 	public static void onAboutToStart(MinecraftServer server)
     {
 
 
-//		from mappings.jar -> mappings.tiny
-    	Field field = null;
-        try {
-            field = SpawnGroup.class.getDeclaredField("field_6297"); 
-            field.setAccessible(true);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        if (field == null) {
-            try {
-                field = SpawnGroup.class.getDeclaredField("capacity");
-                field.setAccessible(true);
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-//                return;
-            }
-        	
-        }
-        if (field == null) {
-        	return;  // mod failed to reflect 
-        }
+		Field field = null;
+		
+		try {
+			MappingResolver mapping = FabricLoader.getInstance().getMappingResolver();
+//			from mappings.jar -> mappings.tiny
+			String fieldName = mapping.mapFieldName("intermediary", "net.minecraft.class_1311", "field_6297",
+					"I");
+			field = SpawnGroup.class.getDeclaredField(fieldName);
+			field.setAccessible(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOGGER.error("XXX Unexpected Reflection Failure set SpawnGroup.capacity accessible");
+			return;
+		}
+		
         LOGGER.info("SpawncapControlUtiity Startup");
-        
 		LOGGER.info("Configured new Spawn Group Values");
-
 
 		for (SpawnGroup mc : SpawnGroup.values()) {
 			int i = 0;

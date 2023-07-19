@@ -1,8 +1,6 @@
 package com.mactso.spawncapcontrolutility.config;
 
-import java.util.Arrays;
 import java.util.HashSet;
-import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
