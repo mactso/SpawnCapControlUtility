@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.mactso.spawncapcontrolutility.Main;
+import com.mactso.spawncapcontrolutility.util.Utility;
 
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -43,13 +44,24 @@ public class MyConfig {
 
 
 	public static String getSpawnCategoryName(String str) {
-		for (String s : spawnCategories) {
-			if (s.toUpperCase().contains(str.toUpperCase())) {
-				String[] parts = str.split(",", 2);
-				return parts[0].trim();
-			}
-		}
-		return "";
+	    String category = "";
+	    int idx;
+
+	    for (String s : spawnCategories) {
+	        idx = s.indexOf(',');
+	        if (idx == -1) {
+	        	category = "";
+	            Utility.debugMsg(0, "Error: Bad Spawn Categories Config Entry: " + s);
+	        } else {
+	            category = s.substring(0, idx).trim();
+	        }
+
+	        if (category.equals(str)) {
+	            return category;
+	        }
+	    }
+
+	    return "";
 	}
 	
 	public static int getSpawnCategoryMaximum(String str) {

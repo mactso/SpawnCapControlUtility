@@ -44,7 +44,7 @@ public class HandleServerAboutToStart {
 			int mcMax = mc.getMaxInstancesPerChunk();
 			LOGGER.info("SpawncapControlUtility: Category " + mn + " has a default maximum of " + mcMax + ".  Checking configuration for override maximum values.");
 
-			String scn = MyConfig.getSpawnCategoryName(mn);
+			String scn = MyConfig.getSpawnCategoryName(mn);  // this is really "isSpawnCategoryConfigured"
 			if (scn.equals("")) {
 				LOGGER.info("SpawncapControlUtility: Category " + mc + " had no configured overrides.  Keeping maximum of " + mc.getMaxInstancesPerChunk());
 				continue;
