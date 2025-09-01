@@ -44,16 +44,15 @@ public class HandleServerAboutToStart {
 			int mcMax = mc.getMaxInstancesPerChunk();
 			LOGGER.info("SpawncapControlUtility: Category " + mn + " has a default maximum of " + mcMax + ".  Checking configuration for override maximum values.");
 
-			String scn = MyConfig.getSpawnCategoryName(mn);
-			if (scn.equals("")) {
-				LOGGER.info("SpawncapControlUtility: Category " + mc + " had no configured overrides.  Keeping maximum of " + mc.getMaxInstancesPerChunk());
+			if (MyConfig.isSpawnCategoryConfigured(mn)) {
+				LOGGER.info("SpawncapControlUtility: Category " + mn + " had no configured overrides.  Keeping maximum of " + mc.getMaxInstancesPerChunk());
 				continue;
 			} 
 
 			
 			int scm = MyConfig.getSpawnCategoryMaximum(mn);
 			if ((scm < 1) || (scm > 350)) {
-				LOGGER.info("SpawncapControlUtility: Category " + scn + " Maximum value less than 1 or greather than 350.  Ignored");
+				LOGGER.info("SpawncapControlUtility: Category " + mn + " Maximum value less than 1 or greather than 350.  Ignored");
 				continue;
 			}
 
@@ -66,7 +65,7 @@ public class HandleServerAboutToStart {
 			if (scm < mcMax) {
 				changeDirection = "Lowered";
 			}
-			LOGGER.info("SpawncapControlUtility: " + changeDirection + " Category "  + scn + " Maximum Value from " + mcMax + " to " + scm);
+			LOGGER.info("SpawncapControlUtility: " + changeDirection + " Category "  + mn + " Maximum Value from " + mcMax + " to " + scm);
 			try {
 				field.setInt(mc, scm);
 			} catch (Exception e) {
