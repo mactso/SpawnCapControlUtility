@@ -5,11 +5,11 @@ import java.util.concurrent.Executor;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.WorldAccess;
+import net.minecraft.world.level.LevelAccessor;
 
 public class CommonEvents {
 
-	public static void onLoadWorld(Executor executor, WorldAccess world) {
+	public static void onLoadWorld(Executor executor, LevelAccessor world) {
 		System.out.println("onLoadWorld executed");
 	}
 

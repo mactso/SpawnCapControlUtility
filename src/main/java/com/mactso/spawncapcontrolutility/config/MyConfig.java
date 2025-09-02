@@ -6,9 +6,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.mactso.spawncapcontrolutility.Main;
+import com.mactso.spawncapcontrolutility.util.Utility;
 import com.mojang.datafixers.util.Pair;
 
-import net.minecraft.entity.SpawnGroup;
+import net.minecraft.world.entity.MobCategory;
 
 
 // Refactored "ModConfigs.java"
@@ -23,27 +24,18 @@ public class MyConfig {
 	private static String spawnCategoriesConfig;
 
 	private static String spawnCategoriesDefault = 
-			SpawnGroup.MONSTER.getName().toUpperCase() + "," + (SpawnGroup.MONSTER.getCapacity() + 3) + ";" +
-			SpawnGroup.CREATURE.getName().toUpperCase() + "," + SpawnGroup.CREATURE.getCapacity() + ";" +
-			SpawnGroup.AMBIENT.getName().toUpperCase() + "," + (SpawnGroup.AMBIENT.getCapacity() - 1)  + ";" +
-			SpawnGroup.AXOLOTLS.getName().toUpperCase() + "," + SpawnGroup.AXOLOTLS.getCapacity()+ ";" +
-			SpawnGroup.UNDERGROUND_WATER_CREATURE.getName().toUpperCase() + ","
-					+ SpawnGroup.UNDERGROUND_WATER_CREATURE.getCapacity()+ ";" +
-			SpawnGroup.WATER_CREATURE.getName().toUpperCase() + "," + SpawnGroup.WATER_CREATURE.getCapacity()
+			MobCategory.MONSTER.getName().toUpperCase() + "," + (MobCategory.MONSTER.getMaxInstancesPerChunk() + 3) + ";" +
+			MobCategory.CREATURE.getName().toUpperCase() + "," + MobCategory.CREATURE.getMaxInstancesPerChunk() + ";" +
+			MobCategory.AMBIENT.getName().toUpperCase() + "," + (MobCategory.AMBIENT.getMaxInstancesPerChunk() - 1)  + ";" +
+			MobCategory.AXOLOTLS.getName().toUpperCase() + "," + MobCategory.AXOLOTLS.getMaxInstancesPerChunk() + ";" +
+			MobCategory.UNDERGROUND_WATER_CREATURE.getName().toUpperCase() + ","
+					+ MobCategory.UNDERGROUND_WATER_CREATURE.getMaxInstancesPerChunk()+ ";" +
+			MobCategory.WATER_CREATURE.getName().toUpperCase() + "," + MobCategory.WATER_CREATURE.getMaxInstancesPerChunk()
 			+ ";" +
-			SpawnGroup.WATER_AMBIENT.getName().toUpperCase() + "," + SpawnGroup.WATER_AMBIENT.getCapacity();
+			MobCategory.WATER_AMBIENT.getName().toUpperCase() + "," + MobCategory.WATER_AMBIENT.getMaxInstancesPerChunk();
 
 	static String[] spawnCategories;
 	
-	public static int safeValue(int newValue) {
-		if (newValue < 1)
-			return 1;
-		if (newValue > 350)
-			return 350;
-		return newValue;
-	}
-
-
 	public static HashSet<String> getModStringSet(String[] values) {
 		HashSet<String> returnset = new HashSet<>();
 		// Collection<ModContainer> loadedMods= FabricLoader.getAllMods(); error static
@@ -74,26 +66,7 @@ public class MyConfig {
 		assignConfigs();
 		
 		spawnCategories = spawnCategoriesConfig.split(";");
-		int i;
-	}
-	
-	public static String getSpawnCategoryName(String str) {
-		for (String s : spawnCategories) {
-			if (s.toUpperCase().contains(str.toUpperCase())) {
-				String[] parts = str.split(",", 2);
-				return parts[0].trim();
-			}
-		}
-		return "";
-	}
-	
-	public static int getSpawnCategoryMaximum(String str) {
-		for (String s : spawnCategories) {
-			if (s.toUpperCase().contains(str.toUpperCase())) {
-				return splitAndGetInt(s.toUpperCase());
-			}
-		}
-		return -1;
+
 	}
 	
 	public static int splitAndGetInt(String inputString) {
@@ -106,6 +79,41 @@ public class MyConfig {
 			return -1;
 		}
 	}
+		
+
+    public static boolean isSpawnCategoryConfigured(String str) {
+        String category = "";
+        int idx;
+
+        Utility.debugMsg(1, "Info: Bad Spawn Categories Config Entry: " + str);
+        
+        for (String s : spawnCategories) {
+            idx = s.indexOf(',');
+            if (idx == -1) {
+                category = "";
+                Utility.debugMsg(0, "Error: Bad Spawn Categories Config Entry: " + s);
+            } else {
+                category = s.substring(0, idx).trim();
+            }
+
+            if (category.equals(str)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+	
+	public static int getSpawnCategoryMaximum(String str) {
+		for (String s : spawnCategories) {
+			if (s.toUpperCase().contains(str.toUpperCase())) {
+				return splitAndGetInt(s.toUpperCase());
+			}
+		}
+		return -1;
+	}
+	
+
 
 	private static void createConfigs() {
 		configs.addKeyValuePair(new Pair<>("key.SpawngroupCapacities", spawnCategoriesDefault), "string");

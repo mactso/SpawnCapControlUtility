@@ -7,10 +7,10 @@ import org.apache.logging.log4j.Logger;
 
 import com.mactso.spawncapcontrolutility.config.MyConfig;
 
-import net.fabricmc.loader.api.MappingResolver;
-import net.minecraft.entity.SpawnGroup;
-import net.minecraft.server.MinecraftServer;
 import net.fabricmc.loader.api.FabricLoader;
+import net.fabricmc.loader.api.MappingResolver;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.world.entity.MobCategory;
 
 
 
@@ -27,41 +27,39 @@ public class HandleServerAboutToStart {
 //			from mappings.jar -> mappings.tiny
 			String fieldName = mapping.mapFieldName("intermediary", "net.minecraft.class_1311", "field_6297",
 					"I");
-			field = SpawnGroup.class.getDeclaredField(fieldName);
+			field = MobCategory.class.getDeclaredField(fieldName);
 			field.setAccessible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
-			LOGGER.error("XXX Unexpected Reflection Failure set SpawnGroup.capacity accessible");
 			return;
 		}
-		
         LOGGER.info("SpawncapControlUtiity Startup");
-		LOGGER.info("Configured new Spawn Group Values");
 
-		for (SpawnGroup mc : SpawnGroup.values()) {
-			int i = 0;
+		LOGGER.info("Configured new Spawn Category Values");
+
+		for (MobCategory mc : MobCategory.values()) {
+
 			String mn = mc.getName().toUpperCase();
 			if (mn.equals("MISC")) {
 				LOGGER.info("SpawncapControlUtility: Category " + mc + " should not be changed.");
 				continue;
 			}
-			int mcMax = mc.getCapacity();
+			int mcMax = mc.getMaxInstancesPerChunk();
 			LOGGER.info("SpawncapControlUtility: Category " + mn + " has a default maximum of " + mcMax + ".  Checking configuration for override maximum values.");
 
-			String scn = MyConfig.getSpawnCategoryName(mn);
-			if (scn.equals("")) {
-				LOGGER.info("SpawncapControlUtility: Category " + mn + " had no configured overrides.  Keeping maximum of " + mc.getCapacity());
+			if (MyConfig.isSpawnCategoryConfigured(mn)) {
+				LOGGER.info("SpawncapControlUtility: Category " + mn + " had no configured overrides.  Keeping maximum of " + mc.getMaxInstancesPerChunk());
 				continue;
 			} 
 
 			
 			int scm = MyConfig.getSpawnCategoryMaximum(mn);
 			if ((scm < 1) || (scm > 350)) {
-				LOGGER.info("SpawncapControlUtility: Category " + scn + " Maximum value less than 1 or greather than 350.  Ignored");
+				LOGGER.info("SpawncapControlUtility: Category " + mn + " Maximum value less than 1 or greather than 350.  Ignored");
 				continue;
 			}
 
-			if (scm == mc.getCapacity()) {
+			if (scm == mc.getMaxInstancesPerChunk()) {
 				LOGGER.info("SpawncapControlUtility: Category " + mn + " configured maximum same as default value.  No change made.");
 				continue;
 			}
@@ -70,15 +68,14 @@ public class HandleServerAboutToStart {
 			if (scm < mcMax) {
 				changeDirection = "Lowered";
 			}
-			LOGGER.info("SpawncapControlUtility: " + changeDirection + " Category "  + scn + " Maximum Value from " + mcMax + " to " + scm);
+			LOGGER.info("SpawncapControlUtility: " + changeDirection + " Category "  + mn + " Maximum Value from " + mcMax + " to " + scm);
 			try {
 				field.setInt(mc, scm);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			i++;
+
 		}
 
-		int end = 0;
     }
 }

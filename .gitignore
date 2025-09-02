@@ -1,9 +1,6 @@
-/logs/
-/bin/
-/build/
 /.gradle/
 /.settings/
-/.classpath
-/.project
+/bin/
 /run/
-/*.launch
+/build/
+/.launch
