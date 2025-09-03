@@ -8,6 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.mactso.spawncapcontrolutility.Main;
+import com.mactso.spawncapcontrolutility.util.Utility;
 
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.common.ForgeConfigSpec;
@@ -41,20 +42,42 @@ public class MyConfig {
 		}
 	}
 
+    public static boolean isSpawnCategoryConfigured(String str) {
+        String category = "";
+        int idx;
 
-	public static String getSpawnCategoryName(String str) {
-		for (String s : spawnCategories) {
-			if (s.toUpperCase().contains(str.toUpperCase())) {
-				String[] parts = str.split(",", 2);
-				return parts[0].trim();
-			}
-		}
-		return "";
-	}
+        Utility.debugMsg(1, "Info: Looking for Spawn Category Config Entry: " + str);
+        
+        for (String s : spawnCategories) {
+            idx = s.indexOf(',');
+            if (idx == -1) {
+                category = "";
+                Utility.debugMsg(0, "Error: Bad Spawn Categories Config Entry: " + s);
+            } else {
+                category = s.substring(0, idx).trim().toUpperCase();
+            }
+
+            if (category.equals(str)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 	
+
 	public static int getSpawnCategoryMaximum(String str) {
+        String category = "";
+        int idx;
 		for (String s : spawnCategories) {
-			if (s.toUpperCase().contains(str.toUpperCase())) {
+            idx = s.indexOf(',');
+            if (idx == -1) {
+                category = "";
+                Utility.debugMsg(0, "Error: Bad Spawn Categories Config Entry: " + s);
+            } else {
+                category = s.substring(0, idx).trim().toUpperCase();
+            }
+			if (category.equals(str.toUpperCase())) {
 				return splitAndGetInt(s.toUpperCase());
 			}
 		}
@@ -92,15 +115,15 @@ public class MyConfig {
 		public Common(ForgeConfigSpec.Builder builder) {
 
 			List<String> spawnCategoriesDefault = Arrays.asList(
-					MobCategory.MONSTER.getName().toUpperCase() + "," + "73",
-					MobCategory.CREATURE.getName().toUpperCase() + "," + MobCategory.CREATURE.getMaxInstancesPerChunk(),
-					MobCategory.AMBIENT.getName().toUpperCase() + "," + 14,
-					MobCategory.AXOLOTLS.getName().toUpperCase() + "," + MobCategory.AXOLOTLS.getMaxInstancesPerChunk(),
+					MobCategory.MONSTER.getName().toUpperCase() + "," + (MobCategory.MONSTER.getMaxInstancesPerChunk() + 10),
+					MobCategory.CREATURE.getName().toUpperCase() + "," + (MobCategory.CREATURE.getMaxInstancesPerChunk() + 9),
+					MobCategory.AMBIENT.getName().toUpperCase() + "," + (MobCategory.AMBIENT.getMaxInstancesPerChunk()+8),
+					MobCategory.AXOLOTLS.getName().toUpperCase() + "," + (MobCategory.AXOLOTLS.getMaxInstancesPerChunk()+7),
 					MobCategory.UNDERGROUND_WATER_CREATURE.getName().toUpperCase() + ","
-							+ MobCategory.UNDERGROUND_WATER_CREATURE.getMaxInstancesPerChunk(),
-					MobCategory.WATER_CREATURE.getName().toUpperCase() + "," + MobCategory.WATER_CREATURE.getMaxInstancesPerChunk()
+							+ (MobCategory.UNDERGROUND_WATER_CREATURE.getMaxInstancesPerChunk()+6),
+					MobCategory.WATER_CREATURE.getName().toUpperCase() + "," + (MobCategory.WATER_CREATURE.getMaxInstancesPerChunk()+5)
 							,
-					MobCategory.WATER_AMBIENT.getName().toUpperCase() + "," + MobCategory.WATER_AMBIENT.getMaxInstancesPerChunk()
+					MobCategory.WATER_AMBIENT.getName().toUpperCase() + "," + (MobCategory.WATER_AMBIENT.getMaxInstancesPerChunk()+4)
 							);
 
 			spawnCategories = builder
