@@ -24,15 +24,15 @@ public class MyConfig {
 	private static String spawnCategoriesConfig;
 
 	private static String spawnCategoriesDefault = 
-			MobCategory.MONSTER.getName().toUpperCase() + "," + (MobCategory.MONSTER.getMaxInstancesPerChunk() + 3) + ";" +
-			MobCategory.CREATURE.getName().toUpperCase() + "," + MobCategory.CREATURE.getMaxInstancesPerChunk() + ";" +
-			MobCategory.AMBIENT.getName().toUpperCase() + "," + (MobCategory.AMBIENT.getMaxInstancesPerChunk() - 1)  + ";" +
-			MobCategory.AXOLOTLS.getName().toUpperCase() + "," + MobCategory.AXOLOTLS.getMaxInstancesPerChunk() + ";" +
+			MobCategory.MONSTER.getName().toUpperCase() + "," + (MobCategory.MONSTER.getMaxInstancesPerChunk() + 10) + ";" +
+			MobCategory.CREATURE.getName().toUpperCase() + "," +(MobCategory.CREATURE.getMaxInstancesPerChunk()+ 1)+ ";" +
+			MobCategory.AMBIENT.getName().toUpperCase() + "," + (MobCategory.AMBIENT.getMaxInstancesPerChunk() + 1)  + ";" +
+			MobCategory.AXOLOTLS.getName().toUpperCase() + "," +(MobCategory.AXOLOTLS.getMaxInstancesPerChunk() + 1) +";" +
 			MobCategory.UNDERGROUND_WATER_CREATURE.getName().toUpperCase() + ","
-					+ MobCategory.UNDERGROUND_WATER_CREATURE.getMaxInstancesPerChunk()+ ";" +
-			MobCategory.WATER_CREATURE.getName().toUpperCase() + "," + MobCategory.WATER_CREATURE.getMaxInstancesPerChunk()
-			+ ";" +
-			MobCategory.WATER_AMBIENT.getName().toUpperCase() + "," + MobCategory.WATER_AMBIENT.getMaxInstancesPerChunk();
+					+ (MobCategory.UNDERGROUND_WATER_CREATURE.getMaxInstancesPerChunk()+ 1) + ";" +
+			MobCategory.WATER_CREATURE.getName().toUpperCase() + "," + (MobCategory.WATER_CREATURE.getMaxInstancesPerChunk() 
+			+  1) + ";" +
+			MobCategory.WATER_AMBIENT.getName().toUpperCase() + "," + (MobCategory.WATER_AMBIENT.getMaxInstancesPerChunk() + 1);
 
 	static String[] spawnCategories;
 	
@@ -80,12 +80,11 @@ public class MyConfig {
 		}
 	}
 		
-
     public static boolean isSpawnCategoryConfigured(String str) {
         String category = "";
         int idx;
 
-        Utility.debugMsg(1, "Info: Bad Spawn Categories Config Entry: " + str);
+        Utility.debugMsg(1, "Info: Looking for Spawn Category Config Entry: " + str);
         
         for (String s : spawnCategories) {
             idx = s.indexOf(',');
@@ -93,7 +92,7 @@ public class MyConfig {
                 category = "";
                 Utility.debugMsg(0, "Error: Bad Spawn Categories Config Entry: " + s);
             } else {
-                category = s.substring(0, idx).trim();
+                category = s.substring(0, idx).trim().toUpperCase();
             }
 
             if (category.equals(str)) {
@@ -104,9 +103,19 @@ public class MyConfig {
         return false;
     }
 	
+
 	public static int getSpawnCategoryMaximum(String str) {
+        String category = "";
+        int idx;
 		for (String s : spawnCategories) {
-			if (s.toUpperCase().contains(str.toUpperCase())) {
+            idx = s.indexOf(',');
+            if (idx == -1) {
+                category = "";
+                Utility.debugMsg(0, "Error: Bad Spawn Categories Config Entry: " + s);
+            } else {
+                category = s.substring(0, idx).trim().toUpperCase();
+            }
+			if (category.equals(str.toUpperCase())) {
 				return splitAndGetInt(s.toUpperCase());
 			}
 		}
@@ -116,6 +125,7 @@ public class MyConfig {
 
 
 	private static void createConfigs() {
+        configs.addKeyValuePair(new Pair<>("key.debugLevel", 0), "int");
 		configs.addKeyValuePair(new Pair<>("key.SpawngroupCapacities", spawnCategoriesDefault), "string");
 	}
 
