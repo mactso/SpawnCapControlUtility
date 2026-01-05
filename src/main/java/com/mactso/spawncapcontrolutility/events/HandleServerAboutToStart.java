@@ -8,6 +8,8 @@ import org.apache.logging.log4j.Logger;
 import com.mactso.spawncapcontrolutility.config.MyConfig;
 
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.level.LocalMobCapCalculator;
+import net.minecraft.world.level.NaturalSpawner.SpawnState;
 import net.minecraftforge.coremod.api.ASMAPI;
 import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.eventbus.api.listener.Priority;
@@ -20,6 +22,7 @@ public class HandleServerAboutToStart {
 
 	@SubscribeEvent(priority = Priority.LOW)
 	public static void onAboutToStart(ServerAboutToStartEvent event) {
+
 
 		Field field = null;
 		String fn = ASMAPI.mapField("max"); // internal MobCategory field : "max"
@@ -35,7 +38,7 @@ public class HandleServerAboutToStart {
 		LOGGER.info("Configured new Spawn Category Values");
 
 		for (MobCategory mc : MobCategory.values()) {
-			int i = 0;
+			// int i = 0;
 			String mn = mc.getName().toUpperCase();
 			if (mn.equals("MISC")) {
 				LOGGER.info("SpawncapControlUtility: Category " + mc + " should not be changed.");
@@ -71,7 +74,7 @@ public class HandleServerAboutToStart {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			i++;
+			// i++;
 		}
 
 		int end = 0;
